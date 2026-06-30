@@ -6,9 +6,40 @@ const App = () => {
 
   const [isQuizStarted, setIsQuizStarted] = React.useState(false)
   const [questionsList, setQuestionsList] = React.useState([])
+  const [selectedAnswer, setSelectedAnswer] = React.useState({})
+  const [isChecked, setIsChecked] = React.useState(false)
+
 
   function startQuiz() {
     setIsQuizStarted(true)
+  }
+
+  function handleClick(qIndex, e){
+    setSelectedAnswer(prevAnswer => {
+      return {
+        ...prevAnswer,
+        [qIndex]: e.target.value
+      }
+    })
+  }
+
+  let score = 0
+
+  for(let i = 0; i < questionsList.length; i++){
+    if(questionsList[i].correct_answer === selectedAnswer[i]) {
+      score = score + 1
+    }
+  }
+
+  function checkAnswer() {
+  setIsChecked(true)
+  }
+
+  function playAgain(){
+    setIsQuizStarted(false)
+    setQuestionsList([])
+    setSelectedAnswer({})
+    setIsChecked(false)
   }
 
   React.useEffect(() =>{
@@ -17,7 +48,7 @@ const App = () => {
     }
     async function questionAPI() {
     try {
-        const response = await fetch("https://opentdb.com/api.php?amount=5")
+        const response = await fetch("https://opentdb.com/api.php?amount=5&type=multiple")
           const data = await response.json()
           console.log(data)
         
@@ -46,8 +77,8 @@ const App = () => {
     <main className="bg-[#F5F7FB] w-screen h-screen relative flex flex-col items-center justify-center overflow-hidden">
       
     <div className="w-full h-full absolute top-0 left-0 z-0 overflow-hidden pointer-events-none">
-      <img className="absolute top-0 right-0" src="./blob-top.svg" alt="" />
-      <img className="absolute bottom-0 left-0" src="./blob-bottom.svg" alt="" />
+      <img className="absolute top-0 right-0 z-0" src="./blob-top.svg" alt="blob-right" />
+      <img className="absolute bottom-0 left-0 z-0" src="./blob-bottom.svg" alt="blob-left" />
     </div>
   {!isQuizStarted &&
       <>
@@ -61,8 +92,17 @@ const App = () => {
           >Start Quiz</button>
       </>
     } 
-      {isQuizStarted && <Questions questionsList={questionsList} />} 
-
+    <div className='relative z-10'>
+      {isQuizStarted && <Questions 
+                            questionsList={questionsList} 
+                            handleClick={handleClick} 
+                            checkAnswer={checkAnswer}
+                            isChecked={isChecked}
+                            score={score}
+                            playAgain={playAgain}
+                            selectedAnswer={selectedAnswer}
+                            />} 
+    </div>
     </main>
   )
 }
