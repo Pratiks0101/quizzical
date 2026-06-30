@@ -5,7 +5,11 @@ const Questions = (props) => {
 
     return (
         <div>
-            {props.isChecked && props.score >=4 && <Confetti />}
+            {props.isChecked && props.score >=4 && 
+            <Confetti 
+                    numberOfPieces={10000} 
+                    width={window.innerWidth} 
+                    recycle={false}  />}
             {props.questionsList.length === 0 
                 ? <h1>Loading Question...</h1> 
                 : props.questionsList.map((question, qIndex) =>  (

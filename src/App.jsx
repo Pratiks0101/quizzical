@@ -50,7 +50,6 @@ const App = () => {
     try {
         const response = await fetch("https://opentdb.com/api.php?amount=5&type=multiple")
           const data = await response.json()
-          console.log(data)
         
           if(data.response_code === 0){
             const formattedQuestions = data.results.map(item => {
