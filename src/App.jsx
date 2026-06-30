@@ -73,7 +73,7 @@ const App = () => {
   },[isQuizStarted])
 
   return (
-    <main className="bg-[#F5F7FB] w-screen h-screen relative flex flex-col items-center justify-center overflow-hidden">
+    <main className="bg-[#F5F7FB] w-full min-h-screen relative flex flex-col items-center justify-center overflow-y-auto">
       
     <div className="w-full h-full absolute top-0 left-0 z-0 overflow-hidden pointer-events-none">
       <img className="absolute top-0 right-0 z-0" src="./blob-top.svg" alt="blob-right" />
